@@ -28,7 +28,7 @@ where faculty_id = 1 and status = 'викладає';
  insert into faculty (faculty_name, building)
 values ('Факультет маркетингу та менеджменту', 7);
 
-select * from faculty order by building asc; 
+select * from faculty order by building; 
 ```
 Результат виконання запиту:
 
