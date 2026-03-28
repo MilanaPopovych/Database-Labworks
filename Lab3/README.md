@@ -19,7 +19,7 @@ from teacher
 where faculty_id = 1 and status = 'викладає';
 ```
 Результат виконання запиту:
-
+![select_fiot_teachers.png](img/select_fiot_teachers.png)
 2. INSERT
 ```sql
 -- INSERT: додати новий факультет в корпус № 7 та вивести у порядку зростання номерів корпусу
@@ -29,7 +29,7 @@ values ('Факультет маркетингу та менеджменту', 7
 select * from faculty order by building asc; 
 ```
 Результат виконання запиту:
-
+![sort_faculties_by_building.png](img/sort_faculties_by_building.png)
 3. UPDATE 
 ```sql
 -- UPDATE: перевести учня на академвідпустку
@@ -38,7 +38,7 @@ set status = 'академ', course = null, end_date = null
 where student_id = 4;
 ```
 Результат виконання запиту:
-
+![update_absent_student.png](img/update_absent_student.png)
 4. DELETE
 ```sql
 -- DELETE: видалити оцінки студента, який відрахований
@@ -50,7 +50,7 @@ where student_id = (
 );
 ```
 Результат виконання запиту: 
-
+![delete_inactive_student.png](img/delete_inactive_student.png)
 ---
 ## Висновки
 Згідно з критеріями оцінювання, синтаксис SQL є коректним, а запити виконуються без помилок та дають правильні результати за рахунок правильного використання
