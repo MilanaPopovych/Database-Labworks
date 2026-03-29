@@ -94,6 +94,16 @@ full join student_group g on s.group_id = g.group_id
 full join course c on e.course_id = c.course_id
 where s.status = 'навчається' or s.student_id is null or c.course_id is null;
 ```
+Результат:
+
+```sql
+-- RIGHT JOIN: вивести усі групи, в тому числі ті, що без студентів
+select g.group_name, s.first_name || ' ' || s.second_name as name_surname
+from student s
+right join student_group g ON s.group_id = g.group_id;
+```
+Результат:
+
 ---
 
 3. Запити з використанням підзапитів (вибірка з підзапитом в `SELECT`, `WHERE`, `HAVING`)
