@@ -81,9 +81,42 @@ where e.student_id is null;
 Результат:
 
 ```sql
-
+-- FULL JOIN: вивести список усіх активних студентів та курсів, на які вони записані
+select 
+	g.group_name,
+	s.first_name || ' ' || s.second_name as name_surname,
+	c.course_name
+from student s
+full join enrollment e on s.student_id = e.student_id
+full join student_group g on s.group_id = g.group_id
+full join course c on e.course_id = c.course_id
+where s.status = 'навчається' or s.student_id is null or c.course_id is null;
 ```
 
 3. Запити з використанням підзапитів (вибірка з підзапитом в `SELECT`, `WHERE`, `HAVING`)
+
+```sql
+-- Знайти групу з найвищим середнім балом з усіх предметів
+select g.group_name, round(avg(e.grade), 2) as avg_group_grade
+from enrollment e 
+join student s on e.student_id = s.student_id
+join student_group g on s.group_id = g.group_id
+group by g.group_id, g.group_name
+having avg(e.grade) > (select avg(grade) from enrollment);
+```
+
+Результат:
+
+```sql
+-- Знайти факультети, де середня к-сть кредитів на один курс вища за середню
+select f.faculty_name, round(avg(c.credits), 2) as avg_course_credits
+from course c 
+join faculty f on c.faculty_id = f.faculty_id
+group by f.faculty_id, f.faculty_name
+having avg(c.credits) > (select avg(credits) from course);
+```
+
+Результат:
+
 ---
 ## Висновки
