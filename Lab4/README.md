@@ -67,6 +67,8 @@ where (current_date - s.birth_date) = (
 ```
 Результат:
 
+---
+
 2. Запити з операціями об'єднання таблиць (`INNER JOIN`, `LEFT JOIN`, `RIGHT JOIN`, `FULL JOIN`, `CROSS JOIN`)
 
 ```sql
@@ -92,6 +94,7 @@ full join student_group g on s.group_id = g.group_id
 full join course c on e.course_id = c.course_id
 where s.status = 'навчається' or s.student_id is null or c.course_id is null;
 ```
+---
 
 3. Запити з використанням підзапитів (вибірка з підзапитом в `SELECT`, `WHERE`, `HAVING`)
 
