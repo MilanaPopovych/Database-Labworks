@@ -72,6 +72,21 @@ where (current_date - s.birth_date) = (
 2. Запити з операціями об'єднання таблиць (`INNER JOIN`, `LEFT JOIN`, `RIGHT JOIN`, `FULL JOIN`, `CROSS JOIN`)
 
 ```sql
+-- вивести імена, прізвища та оцінки студентів з курсів, де бал більше 80, в порядку спадання
+select 
+    s.first_name, 
+    s.second_name, 
+    c.course_name, 
+    e.grade
+from enrollment e
+join student s on e.student_id = s.student_id
+join course c on e.course_id = c.course_id
+where e.grade > 80
+order by e.grade desc;
+```
+Результат:
+
+```sql
 -- LEFT JOIN: вивести імена, прізвища та групи студентів, у яких немає жодних оцінок
 select s.first_name, s.second_name, g.group_name
 from student s 
