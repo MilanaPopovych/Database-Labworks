@@ -72,7 +72,7 @@ where (current_date - s.birth_date) = (
 2. Запити з операціями об'єднання таблиць (`INNER JOIN`, `LEFT JOIN`, `RIGHT JOIN`, `FULL JOIN`, `CROSS JOIN`)
 
 ```sql
--- вивести імена, прізвища та оцінки студентів з курсів, де бал більше 80, в порядку спадання
+-- INNER JOIN: вивести імена, прізвища та оцінки студентів з курсів, де бал більше 80, в порядку спадання
 select 
     s.first_name, 
     s.second_name, 
@@ -142,6 +142,22 @@ from course c
 join faculty f on c.faculty_id = f.faculty_id
 group by f.faculty_id, f.faculty_name
 having avg(c.credits) > (select avg(credits) from course);
+```
+
+Результат:
+
+```sql
+-- Знайти та вивести інформацію про групу, в якій навчається студент Шеремета Артем
+select
+    g.group_name,
+    g.curator_name,
+    s.first_name || ' ' || s.second_name as name_surname,
+    s.status
+from student s
+join student_group g on s.group_id = g.group_id
+where s.group_id = (select s.group_id from student s
+	where s.first_name = 'Артем' and s.second_name = 'Шеремета'
+);
 ```
 
 Результат:
