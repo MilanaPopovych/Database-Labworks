@@ -248,7 +248,7 @@ having avg(e.grade) > (select avg(grade) from enrollment);
 
 Результат:
 
-![having_avg_course_credits.png](img/3/having_avg_course_credits.png)
+![having_highest_avg_grade.png](img/3/having_highest_avg_grade.png)
 
 ---
 
@@ -285,7 +285,7 @@ having avg(c.credits) > (select avg(credits) from course);
 
 Результат:
 
-![having_higest_avg_grade.png](img/3/having_higest_avg_grade.png)
+![having_avg_course_credits.png](img/3/having_avg_course_credits.png)
 
 ---
 
