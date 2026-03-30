@@ -20,6 +20,8 @@ where student_year = 2 and is_active = true;
 ```
 Результат: 
 
+![sum_credits_4th_semester.png](img/1/sum_credits_4th_semester.png)
+
 ```sql
 -- AVG: в групі ІО-46 вивести середній бал з предмету Вища математика-3
 select g.group_name, c.course_name, 
@@ -32,6 +34,8 @@ where g.group_name = 'IO-46' and c.course_name = 'Вища математика-
 group by g.group_name, c.course_name;
 ```
 Результат:
+
+![avg_IO-46_maths_grade.png](img/1/avg_IO-46_maths_grade.png)
 
 ```sql
 -- MIN: Вивести найнижчий бал з потоку ІО-4х та назву дисципліни
@@ -52,6 +56,8 @@ where g.group_name like 'ІО-4%' and e.grade = (
 ```
 Результат:
 
+![min_abs_minimum_grade.png](img/1/min_abs_minimum_grade.png)
+
 ```sql
 -- MAX: вивести інформацію про найстаршого студента 
 select
@@ -66,6 +72,8 @@ where (current_date - s.birth_date) = (
 );
 ```
 Результат:
+
+![max_oldest_student.png](img/1/max_oldest_student.png)
 
 ---
 
@@ -86,6 +94,8 @@ order by e.grade desc;
 ```
 Результат:
 
+![inner_join_morethan80.png](img/2/inner_join_morethan80.png)
+
 ```sql
 -- LEFT JOIN: вивести імена, прізвища та групи студентів, у яких немає жодних оцінок
 select s.first_name, s.second_name, g.group_name
@@ -96,6 +106,8 @@ where e.student_id is null;
 ```
 
 Результат:
+
+![left_join_students_without_grades.png](img/2/left_join_students_without_grades.png)
 
 ```sql
 -- FULL JOIN: вивести список усіх активних студентів та курсів, на які вони записані
@@ -111,6 +123,8 @@ where s.status = 'навчається' or s.student_id is null or c.course_id i
 ```
 Результат:
 
+![full_join_all_students.png](img/2/full_join_all_students.png)
+
 ```sql
 -- RIGHT JOIN: вивести усі групи, в тому числі ті, що без студентів
 select g.group_name, s.first_name || ' ' || s.second_name as name_surname
@@ -118,6 +132,8 @@ from student s
 right join student_group g ON s.group_id = g.group_id;
 ```
 Результат:
+
+![right_join_all_students.png](img/2/right_join_all_students.png)
 
 ---
 
@@ -135,6 +151,8 @@ having avg(e.grade) > (select avg(grade) from enrollment);
 
 Результат:
 
+![having_avg_course_credits.png](img/3/having_avg_course_credits.png)
+
 ```sql
 -- Знайти факультети, де середня к-сть кредитів на один курс вища за середню
 select f.faculty_name, round(avg(c.credits), 2) as avg_course_credits
@@ -145,6 +163,8 @@ having avg(c.credits) > (select avg(credits) from course);
 ```
 
 Результат:
+
+![having_higest_avg_grade.png](img/3/having_higest_avg_grade.png)
 
 ```sql
 -- Знайти та вивести інформацію про групу, в якій навчається студент Шеремета Артем
@@ -159,8 +179,9 @@ where s.group_id = (select s.group_id from student s
 	where s.first_name = 'Артем' and s.second_name = 'Шеремета'
 );
 ```
-
 Результат:
+
+![select_where_sheremeta.png](img/3/select_where_sheremeta.png)
 
 ---
 ## Висновки
