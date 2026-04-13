@@ -158,6 +158,8 @@ create table student (
 
 ### ER-діаграма оновленої бази даних
 
+![ERD_lab5.png](ERD_lab5.png)
+
 ---
 
 ## Висновки
