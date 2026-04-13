@@ -64,7 +64,51 @@
 
 ---
 
-## 4. Перероблений дизайн таблиць (SQL)
+## 4. Трансформація структури (ALTER TABLE)
+
+Після декомпозиції початкової ненормалізованої сутності на окремі таблиці (`faculty`, `teacher`, `student_group`, `student`), ми використовуємо команди `alter table` для встановлення зв'язків та обмежень цілісності.
+
+### Таблиця student_group
+```sql
+-- видаляємо старе текстове поле
+alter table student_group drop column if exists curator_name;
+
+-- додаємо зовнішній ключ на таблицю викладачів
+alter table student_group 
+add column curator_id int,
+add constraint fk_group_curator 
+foreign key (curator_id) references teacher(teacher_id) 
+on delete set null;
+```
+
+### Таблиця student
+```sql
+-- переконуємося, що тип даних збігається з первинним ключем у student_group
+alter table student 
+add constraint fk_student_group 
+foreign key (group_id) references student_group(group_id);
+```
+
+### Таблиця teacher
+```sql
+alter table teacher 
+add constraint fk_teacher_faculty 
+foreign key (faculty_id) references faculty(faculty_id);
+```
+Прив'язуємо викладача до факультету (усунення аномалій приналежності)
+
+### Таблиця course
+
+```sql
+alter table course 
+add constraint chk_credits check (credits > 0 and credits < 60),
+add constraint fk_course_faculty foreign key (faculty_id) references faculty(faculty_id);
+```
+Додаємо обов'язкову перевірку для кредитів та прив'язку до факультету
+
+---
+
+## 5. Перероблений дизайн таблиць (SQL)
 
 Нижче наведено команди створення (`CREATE TABLE`) для переглянутої схеми у 3NF. В таблиці `student_group` видалено текстове поле куратора і додано зовнішній ключ `curator_id`.
 
@@ -111,8 +155,10 @@ create table student (
     group_id int not null references student_group(group_id)
 );
 ```
+
 ### ER-діаграма оновленої бази даних
 
 ---
-## Висновки
 
+## Висновки
+У ході виконання лабораторної роботи було проведено повний цикл нормалізації бази даних навчального закладу до нормальної форми 3NF. Було виявлено та формалізовано повні, часткові та транзитивні залежності, що дозволило чітко зрозуміти логічну структуру даних та ідентифікувати слабкі місця початкового дизайну. В результаті було розроблено DDL-скрипт та забезпечено цілісність даних через систему зовнішніх ключів.
