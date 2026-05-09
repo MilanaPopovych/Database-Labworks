@@ -1,0 +1,127 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model course {
+  course_id                                                              Int                   @id @default(autoincrement())
+  course_name                                                            String                @db.VarChar(60)
+  credits                                                                Int                   @db.SmallInt
+  student_year                                                           Int                   @db.SmallInt
+  is_active                                                              Boolean
+  faculty_id                                                             Int
+  faculty                                                                faculty               @relation(fields: [faculty_id], references: [faculty_id], onDelete: NoAction, onUpdate: NoAction)
+  course_prerequisite_course_prerequisite_course_idTocourse              course_prerequisite[] @relation("course_prerequisite_course_idTocourse")
+  course_prerequisite_course_prerequisite_prerequisite_course_idTocourse course_prerequisite[] @relation("course_prerequisite_prerequisite_course_idTocourse")
+  enrollment                                                             enrollment[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model course_prerequisite {
+  course_id                                                 Int
+  prerequisite_course_id                                    Int
+  course_course_prerequisite_course_idTocourse              course @relation("course_prerequisite_course_idTocourse", fields: [course_id], references: [course_id], onDelete: NoAction, onUpdate: NoAction)
+  course_course_prerequisite_prerequisite_course_idTocourse course @relation("course_prerequisite_prerequisite_course_idTocourse", fields: [prerequisite_course_id], references: [course_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([course_id, prerequisite_course_id])
+}
+
+model enrollment {
+  course_id  Int
+  student_id Int
+  grade      Int?    @db.SmallInt
+  course     course  @relation(fields: [course_id], references: [course_id], onDelete: NoAction, onUpdate: NoAction)
+  student    student @relation(fields: [student_id], references: [student_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([course_id, student_id])
+}
+
+model faculty {
+  faculty_id    Int             @id @default(autoincrement())
+  faculty_name  String?         @db.VarChar(100)
+  building      Int?            @db.SmallInt
+  course        course[]
+  student_group student_group[]
+  teacher       teacher[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model student {
+  student_id     Int                     @id @default(autoincrement())
+  first_name     String                  @db.VarChar(25)
+  second_name    String                  @db.VarChar(35)
+  birth_date     DateTime                @db.Date
+  start_date     DateTime?               @db.Date
+  end_date       DateTime?               @db.Date
+  phone_number   String                  @db.Char(13)
+  email          String                  @unique @db.VarChar(64)
+  course         Int?
+  status         student_status
+  form_of_study  student_form_of_study?
+  finance_source student_finance_source?
+  group_id       Int
+  enrollment     enrollment[]
+  student_group  student_group           @relation(fields: [group_id], references: [group_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model student_group {
+  group_id     Int       @id @default(autoincrement())
+  group_name   String    @db.Char(7)
+  start_year   Int       @db.SmallInt
+  curator_name String?   @db.VarChar(25)
+  faculty_id   Int
+  student      student[]
+  faculty      faculty   @relation(fields: [faculty_id], references: [faculty_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model teacher {
+  teacher_id   Int            @id @default(autoincrement())
+  first_name   String         @db.VarChar(25)
+  second_name  String         @db.VarChar(35)
+  phone_number String         @db.Char(13)
+  email        String         @unique @db.VarChar(64)
+  job          teacher_role?
+  status       teacher_status
+  faculty_id   Int
+  faculty      faculty        @relation(fields: [faculty_id], references: [faculty_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+enum student_status {
+  STUDYING    @map("навчається")
+  GRADUATE    @map("випускник")
+  ACADEMIC    @map("академ")
+  EXPELLED    @map("відрахований")
+  APPLICANT   @map("абітурієнт")
+}
+
+enum student_form_of_study {
+  FULL_TIME   @map("денна")
+  PART_TIME   @map("заочна")
+  EVENING     @map("вечірня")
+  REMOTE      @map("дистанційна")
+}
+
+enum student_finance_source {
+  CONTRACT    @map("контракт")
+  BUDGET      @map("бюджет")
+  WORKING_OFF @map("відпрацювання")
+}
+
+enum teacher_role {
+  ASSISTANT   @map("асистент")
+  SENIOR      @map("старший викладач")
+  DOCENT      @map("доцент")
+  PROFESSOR   @map("професор")
+}
+
+enum teacher_status {
+  TEACHING    @map("викладає")
+  FIRED       @map("звільнений")
+  ON_LEAVE    @map("у відпустці")
+}
